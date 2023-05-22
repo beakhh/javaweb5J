@@ -5,6 +5,7 @@
 	<style>
 	</style>
 </head>
+
 <div class=" text-center" style="margin-top:0; height:300px; width:100% ">
 	<div class="">
 	  <div id="demo" class="carousel slide" data-ride="carousel">

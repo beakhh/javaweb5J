@@ -49,17 +49,156 @@ public class MemberDAO {
 			} catch (SQLException e) {}
 		}
 	}
+	
 	// 아이디 중복체크
-	public String getMemberMidCheck(String mid) {
-		String res = "0";
+	public MemberVO getMemberMidCheck(String mid) {
+		vo = new MemberVO();
 		try {
 			sql = "select * from B_member where mid = ?";
 			pstmt = conn.prepareStatement(sql);
 		  pstmt.setString(1, mid);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				res = "1";
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setName(rs.getString("name"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setGender(rs.getString("gender"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setTel(rs.getString("tel"));
+				vo.setAddress(rs.getString("address"));
+				vo.setEmail(rs.getString("email"));
+				vo.setJob(rs.getString("job"));
+				vo.setPhoto(rs.getString("photo"));
+				vo.setContent(rs.getString("content"));
+				vo.setUserInfor(rs.getString("userInfor"));
+				vo.setUserDel(rs.getString("userDel"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLevel(rs.getInt("level"));
+				vo.setStartDate(rs.getString("startDate"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setVisitCnt(rs.getInt("visitCnt"));
+				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vo.setSalt(rs.getString("salt"));
 			}
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 mid : " + e.getMessage());
+		} finally {
+			getConn.rsClose();
+		}
+		return vo;
+	}
+	
+	// 닉네임 중복체크
+	public MemberVO getMemberNickCheck(String nickName) {
+		vo = new MemberVO();
+		try {
+			sql = "select * from B_member where nickName = ?";
+			pstmt = conn.prepareStatement(sql);
+		  pstmt.setString(1, nickName);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setName(rs.getString("name"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setGender(rs.getString("gender"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setTel(rs.getString("tel"));
+				vo.setAddress(rs.getString("address"));
+				vo.setEmail(rs.getString("email"));
+				vo.setJob(rs.getString("job"));
+				vo.setPhoto(rs.getString("photo"));
+				vo.setContent(rs.getString("content"));
+				vo.setUserInfor(rs.getString("userInfor"));
+				vo.setUserDel(rs.getString("userDel"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLevel(rs.getInt("level"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setVisitCnt(rs.getInt("visitCnt"));
+				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vo.setSalt(rs.getString("salt"));
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 nickName : " + e.getMessage());
+		} finally {
+			getConn.rsClose();
+		}
+		return vo;
+	}
+	
+	public int setMemberJoinOk(MemberVO vo) {
+		int res1 = 0;
+		try {
+			sql="insert into B_member values (default,?,?,?,?,?,?,?,?,?,?,default,?,default,default,default,default,default,default,default,default,?)";
+			pstmt = conn.prepareStatement(sql); 
+			pstmt.setString(1, vo.getMid());
+			pstmt.setString(2, vo.getPwd());
+			pstmt.setString(3, vo.getName());
+			pstmt.setString(4, vo.getNickName());
+			
+			pstmt.setString(5, vo.getGender());
+			
+			pstmt.setString(6, vo.getBirthday());
+			pstmt.setString(7, vo.getTel());
+			pstmt.setString(8, vo.getAddress());
+			pstmt.setString(9, vo.getEmail());
+			pstmt.setString(10, vo.getJob());
+			pstmt.setString(11, vo.getContent());
+			pstmt.setString(12, vo.getSalt());
+			pstmt.executeUpdate();
+			res1 = 1;
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 3 : " + e.getMessage());
+		} finally {
+			getConn.pstmtClose();
+		}
+		return res1;
+	}
+	
+//오늘 처음 방문시에 방문카운트를 0으로 초기화.
+	public void setTodayCntUpdate(String mid) {
+		try {
+			sql = "update B_member set todayCnt = 0 where mid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 : " + e.getMessage());
+		} finally {
+			getConn.pstmtClose();
+		}
+	}
+	
+//방문시, '총방문수', '오늘방문수','포인트','최종접속일' 누적처리
+	public void setMemberTotalUpdate(String mid, int nowTodayPoint) {
+		try {
+			sql = "update B_member set visitCnt=visitCnt+1, todayCnt=todayCnt+1, point=?, lastDate=now() where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, nowTodayPoint);
+			pstmt.setString(2, mid);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 : " + e.getMessage());
+		} finally {
+			getConn.pstmtClose();
+		}
+	}
+	
+	// 비밀번호 체크
+	public String getGuestPwdCheck(String mid, String pwd) {
+		String res = "0";
+		try {
+			sql="select * from B_member where mid=? and pwd = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, pwd);
+			rs = pstmt.executeQuery();
+			if(rs.next()) res = "1";
+			
 		} catch (SQLException e) {
 			System.out.println("SQL 에러 : " + e.getMessage());
 		} finally {
@@ -68,35 +207,18 @@ public class MemberDAO {
 		return res;
 	}
 	
-	// 닉네임 중복체크
-	public String getMemberNickCheck(String nickName) {
-		String res = "0";
+	//등업 
+	public void setgCountUpdateLevel(String mid) {
 		try {
-			sql = "select * from B_member where nickName = ?";
-			pstmt = conn.prepareStatement(sql);
-		  pstmt.setString(1, nickName);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				res = "1";
-			}
-		} catch (SQLException e) {
-			System.out.println("SQL 에러 : " + e.getMessage());
-		} finally {
-			getConn.rsClose();
-		}
-		return res;
+		sql="update B_member set level = 3 where mid = ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, mid);
+		pstmt.executeUpdate();
+		
+	} catch (SQLException e) {
+		System.out.println("SQL 오류 : " + e.getMessage());
+	} finally {
+		pstmtClose();
 	}
-	public int setMemberJoinOk(MemberVO vo) {
-		int res1 = 0;
-		try {
-			sql="insert into member values (default,?,?,?,?,default,?,?,?,?,?,default,?,default,default,default,default,default,default,default,default,?)";
-			
-			
-		} catch (SQLException e) {
-			System.out.println("SQL 에러 : " + e.getMessage());
-		} finally {
-			getConn.pstmtClose();
-		}
-		return res1;
-	}
+}
 }

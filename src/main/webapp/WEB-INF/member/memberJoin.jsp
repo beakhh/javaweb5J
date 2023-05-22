@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://kit.fontawesome.com/56306a2c93.js" crossorigin="anonymous"></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<title>memberJoin.jsp</title>
@@ -24,7 +25,7 @@
 	  width:100%;
 	  margin:auto;
 	  max-width:525px;
-	  min-height:670px;
+	  min-height:770px;
 	  position:relative;
 	  box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
 	}
@@ -97,7 +98,7 @@
 	}
 	.login-form .group .label{
 	  color:#000;
-	  font-size:12px;
+	  font-size:14px;
 	}
 	.login-form .group .button{
 	 background: #EEE5A2;
@@ -155,6 +156,11 @@
 	}
 	.foot-lnk{
 	  text-align:center;
+	}
+	
+	.btn-custom {
+	  background-color: #EEE5A2;
+	  color: #000;
 	}
 	</style>
 	
@@ -215,13 +221,59 @@
       }
     	
     	if(submitFlag == 1) {
-    		
-	    	myform.submit();
+    		if(idCheckSw == 0) {
+    			alert("아이디 중복체크버튼을 눌러주세요!");
+    			document.getElementById("midBtn").focus();
+    		}
+    		else if(nickCheckSw == 0) {
+    			alert("닉네임 중복체크버튼을 눌러주세요!");
+    			document.getElementById("nickNameBtn").focus();
+    		}
+    		else {
+		    	myform.submit();
+    		}
     	}
     	else {
     		alert("회원가입 실패~~ 폼의 내용을 확인하세요.");
     	}
-	}
+    	
+    }
+	
+	// 아이디 중복체크
+    function idCheck() {
+    	let mid = myform.mid.value;
+    	let url = "${ctp}/MemberIdCheck.mem?mid="+mid;
+    	
+    	if(mid.trim() == "") {
+    		alert("아이디를 입력하세요!");
+    		myform.mid.focus();
+    	}
+    	else {
+    		idCheckSw = 1;
+    		myform.mid.readOnly = true;
+    		window.open(url,"nWin","width=580px,height=250px");
+    	}
+    }
+    
+    // 닉네임 중복체크
+    function nickCheck() {
+    	let nickName = myform.nickName.value;
+    	let url = "${ctp}/MemberNickCheck.mem?nickName="+nickName;
+    	
+    	if(nickName.trim() == "") {
+    		alert("닉네임을 입력하세요!");
+    		myform.nickName.focus();
+    	}
+    	else {
+    		nickCheckSw = 1;
+    		myform.nickName.readOnly = true;
+    		window.open(url,"nWin","width=580px,height=250px");
+    	}
+    }
+    
+    
+    
+    
     	
 	</script>
 </head>
@@ -229,42 +281,45 @@
 <body>
 <jsp:include page="/include/nav.jsp" />
 
-<div class="login-wrap">
+<div class="login-wrap  mt-5 ">
   <div class="login-html">
     <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
     <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
     <div class="login-form">
+    
       <div class="sign-in-htm">
-      
-        <div class="group">
-          <label for="user" class="label">Username</label>
-          <input id="user" type="text" class="input">
-        </div>
-        
-        <div class="group">
-          <label for="pass" class="label">Password</label>
-          <input id="pass" type="password" class="input" data-type="password">
-        </div>
-        
-        <div class="group">
-          <input id="check" type="checkbox" class="check" checked>
-          <label for="check"><span class="icon"></span> Keep me Signed in</label>
-        </div>
-        
-        <div class="group">
-          <input type="submit" class="button" value="Sign In">
-        </div>
+      	<form name="myform1" method="post" action="${ctp}/MemberLoginOk.mem">
+      	
+	        <div class="group">
+	          <label for="mid" class="label">User ID</label>
+	          <input type="text" class="input" name="mid" id="Lmid" value="${coomid}" required autofocus />
+	        </div>
+	        
+	        <div class="group">
+	          <label for="pwd" class="label">Password</label>
+	          <input id="Lpwd" name="pwd" type="password" class="input" data-type="password">
+	        </div>
+	        
+	        <div class="group">
+	          <input id="idSave" name="idSave" type="checkbox" class="idSave" checked>
+	          <label for="check"><span class="icon"></span> Keep me Signed in</label>
+	        </div>
+	        
+	        <div class="group">
+	          <input type="submit" class="button" value="Sign In">
+	        </div>
+        </form>
         
         <div class="hr"></div>
         <div class="foot-lnk">
           <a href="#forgot">Forgot Password?</a>
         </div>
       </div>
-      
+      	          
       <form name="myform" method="post" action="${ctp}/MemberJoinOk.mem">
 	      <div class="sign-up-htm">
 	        <div class="group">
-	          <label for="mid" class="label">아이디</label>
+	          <label for="mid" class="label">아이디  &nbsp; &nbsp;<input type="button" value="아이디 중복체크" id="midBtn" class="btn btn-custom btn-sm" onclick="idCheck()"/> </label>
 	          <input id="mid" name="mid" type="text" class="input" required autofocus>
 	        </div>
 	        
@@ -279,7 +334,7 @@
 	        </div>
 
 	        <div class="group">
-	          <label for="nickName" class="label">닉네임</label>
+	          <label for="nickName" class="label">닉네임 &nbsp; &nbsp;<input type="button" id="nickNameBtn" value="닉네임 중복체크" class="btn btn-custom btn-sm"  style="font-size: 14px;" onclick="nickCheck()"/></label>
 	          <input id="nickName" name="nickName" type="text" class="input"  required>
 	        </div>
 	        
@@ -288,7 +343,18 @@
 	          <input type="date" id="birthday" name="birthday" value="" class="input" required/>
 	        </div>
 	        
-	        <div class="group">
+		      <div class="group">
+		        <span class="">성별</span> &nbsp; &nbsp; &nbsp; &nbsp;
+		        <label class="form-check-label">
+		          <input type="radio" class="form-check-input" name="gender" value="남자" checked>남자
+		        </label>&nbsp; &nbsp;&nbsp; &nbsp;
+		        <label class="form-check-label">
+		          <input type="radio" class="form-check-input" name="gender" value="여자">여자
+		        </label>
+		      </div>
+		      <span></span>
+	        
+	        <div class="group m-t3px">
 	        <button type="button" class="button" onclick="fCheck()">SING UP</button>
 	          <!-- <input type="submit" class="button" value="가 입"> -->
 	        </div>

@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
-
+<%
+	int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
+	pageContext.setAttribute("level", level);
+%>
 <style>
   #log {
     width: auto;
@@ -32,6 +35,11 @@
       <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/BoardList.bo">신상품</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${ctp}/GuestList.gu">방명록</a>
+      </li>
+      
+      <c:if test="${level < 5}">
       <li>
 			  <div class="dropdown">
 			    <button type="button" class="btn text-dark dropdown-toggle" data-toggle="dropdown">커뮤니티</button>
@@ -59,22 +67,24 @@
 			  <div class="dropdown">
 			    <button type="button" class="btn text-dark dropdown-toggle" data-toggle="dropdown">MyPage</button>
 			    <div class="dropdown-menu">
+			      <a class="dropdown-item" href="${ctp}/MemberMyPage.mem">내 정보</a>
 			      <a class="dropdown-item" href="#">회원정보수정</a>
 			      <a class="dropdown-item" href="#">회원리스트</a>
 			      <a class="dropdown-item" href="#">회원탈퇴</a>
 			    </div>
 			  </div>  
       </li>
+	  </c:if>
     </ul>
   </div>
+  
   	<div id="log" >	
       <ul class="navbar-nav collapse navbar-collapse " id="collapsibleNavbar">
-				<li class="nav-item">
-	        <a class="navbar-brand" href="${ctp}/GuestList.gu">로그인</a>
-	      </li> 
 			 <li id="nav-item1">
-        <a class="nav-link" href="${ctp}/MemberJoin.mem">회원가입</a>
+        <c:if test="${level > 5}"> <a class="nav-link" href="${ctp}/MemberJoin.mem">로그인 / 회원가입</a></c:if>
+        <c:if test="${level < 5}"> <a class="nav-link" href="${ctp}/MemberLogout.mem"> 로그아웃 </a></c:if>
       </li>
     </ul>
 	</div>
 </nav>
+	<hr style="height: 0px; margin: 5px auto;">

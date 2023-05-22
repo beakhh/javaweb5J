@@ -16,28 +16,12 @@ public class MemberJoinOkCommand implements MemberInterface {
 		String mid = request.getParameter("mid")==null ? "" :  request.getParameter("mid");
 		String pwd = request.getParameter("pwd")==null ? "" :  request.getParameter("pwd");
 		String name = request.getParameter("name")==null ? "" :  request.getParameter("name");
-		String birthday = request.getParameter("birthday")==null ? "" :  request.getParameter("birthday");
 		String nickName = request.getParameter("nickName")==null ? "" :  request.getParameter("nickName");
+		String gender = request.getParameter("gender")==null ? "" :  request.getParameter("gender");
+		String birthday = request.getParameter("birthday")==null ? "" :  request.getParameter("birthday");
 		
 		
 		MemberDAO dao = new MemberDAO();
-		
-		String res = "0";
-				
-		res = dao.getMemberMidCheck(mid);
-		if(res == "1") {
-			request.setAttribute("msg", "이미 사용중인 아이디입니다.");
-			request.setAttribute("url", request.getContextPath()+"/MemberJoin.mem");
-			return;
-		}
-		
-		res = dao.getMemberNickCheck(nickName);
-		if(res == "1") {
-			request.setAttribute("msg", "이미 사용중인 닉네임입니다.");
-			request.setAttribute("url", request.getContextPath()+"/MemberJoin.mem");
-			return;
-		}
-		
 		
 		MemberVO vo = null;
 		
@@ -53,16 +37,18 @@ public class MemberJoinOkCommand implements MemberInterface {
 		vo.setPwd(pwd);
 		vo.setName(name);
 		vo.setNickName(nickName);
+		vo.setBirthday(gender);
 		vo.setBirthday(birthday);
+		vo.setSalt(salt);
 		
 		int res1 = dao.setMemberJoinOk(vo);
-		
+		System.out.println(res1);
 		if(res1 == 1) {
 			request.setAttribute("msg", "회원에 가입되셨습니다. \\n다시 로그인해 주세요.");
-			request.setAttribute("url", request.getContextPath()+"/MemberLogin.mem");
+			request.setAttribute("url", request.getContextPath()+"/MemberJoin.mem");
 		}
 		else {
-			request.setAttribute("msg", "회원가입 실패~~");
+			request.setAttribute("msg", "회원가입 실패 다시 시도해 주세요~~");
 			request.setAttribute("url", request.getContextPath()+"/MemberJoin.mem");
 		}
 	}
