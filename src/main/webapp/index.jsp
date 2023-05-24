@@ -8,6 +8,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<title>title</title>
 		<jsp:include page="/include/bs4.jsp"/>
+	<style>
+  	body {
+		  font-size: 12px;
+		}
+  </style>
   <script>
     'use strict';
   </script>

@@ -15,6 +15,13 @@
       background-color:#eee;
       text-align: center;
     }
+    .asdf {
+      margin-top: 20px;
+      border-radius: 20px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      position: relative;
+    }
   </style>
   <script>
     'use strict';
@@ -31,59 +38,26 @@
   </script>
 </head>
 <body>
-<jsp:include page="/include/header.jsp" />
+<jsp:include page="/include/nav.jsp" />
 <p><br/></p>
-<div class="container">
-  <h2 class="text-center">방명록리스트</h2>
+
+<div class="table">
+	<div class="row" style="width:100%;">
+		<div class="col-8" style="width:60%; margin-left:15%">
+			<div class="asdf" style="width:80%; margin-left:15%;  ">
+			
+			
+  <h3 class="text-center">방명록리스트</h3>
   <table class="table table-borderless mb-0 p-0">
     <tr>
       <td>
-        <c:if test="${sAdmin != 'adminOk'}">
-        
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-			    관리자
-			  </button>
-        
-         <!-- The Modal -->
-				<form name ="myform" method="post" action="${ctp}/AdminLoginOk.gu">
-				  <div class="modal fade" id="myModal">
-				    <div class="modal-dialog modal-dialog-centered">
-				      <div class="modal-content">
-				      
-				        <!-- Modal Header -->
-				        <div class="modal-header">
-				          <h4 class="modal-title">비밀번호 입력</h4>
-				          <button type="button" class="close" data-dismiss="modal">&times;</button>
-				        </div>
-				        
-				        <!-- Modal body -->
-				        <div class="modal-body">
-				          <input type="password" name="pwd" id="pwd" class="form-control" required />
-				        </div>
-				        
-				        <!-- Modal footer -->
-				        <div class="modal-footer">
-				        	<button type="submit" value="관리자로그인" class="btn btn-success">로그인</button>
-				          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				          <input type="hidden" name="mid" value="${sMid}"/>
-				        </div>
-				        
-				      </div>
-				    </div>
-				  </div>
-        </form>
-        
-        
-        </c:if>
-        
-        <c:if test="${sAdmin == 'adminOk'}"><a href="${ctp}/AdminLogout.gu" class="btn btn-danger btn-sm">관리자로그아웃</a></c:if>
       </td>
       <td style="text-align:right;"><a href="${ctp}/GuestInput.gu" class="btn btn-primary btn-sm">글쓰기</a></td>
     </tr>
   </table>
   <table class="table table-borderless mb-0 p-0">
     <tr>
-      <td>
+      <td style="text-align:right;">
         <select name="pageSize" id="pageSize" onchange="pageCheck()">
           <option <c:if test="${pageSize == 3}">selected</c:if>>3</option>
           <option <c:if test="${pageSize == 5}">selected</c:if>>5</option>
@@ -91,18 +65,6 @@
           <option <c:if test="${pageSize == 15}">selected</c:if>>15</option>
           <option <c:if test="${pageSize == 20}">selected</c:if>>20</option>
         </select> 건
-      </td>
-      <td class="text-right">
-        <!-- 첫페이지 / 이전페이지 / (현재페이지번호/총페이지수) / 다음페이지 / 마지막페이지 -->
-        <c:if test="${pag > 1}">
-          <a href="${ctp}/GuestList.gu?pageSize=${pageSize}&pag=1" title="첫페이지로">◁◁</a>
-          <a href="${ctp}/GuestList.gu?pageSize=${pageSize}&pag=${pag-1}" title="이전페이지로">◀</a>
-        </c:if>
-        ${pag}/${totPage}
-        <c:if test="${pag < totPage}">
-          <a href="${ctp}/GuestList.gu?pageSize=${pageSize}&pag=${pag+1}" title="다음페이지로">▶</a>
-          <a href="${ctp}/GuestList.gu?pageSize=${pageSize}&pag=${totPage}" title="마지막페이지로">▷▷</a>
-        </c:if>
       </td>
     </tr>
   </table>
@@ -112,25 +74,39 @@
 	    <tr>
 	      <td>
 	        번호 : ${curScrStartNo}
-	        <c:if test="${sAdmin == 'adminOk'}">
+	        <c:if test="${sAdmin != null}">
 	        	<a href="javascript:delCheck(${vo.idx})" class="btn btn-danger btn-sm">삭제</a>
 	        </c:if>
 	      </td>
-	      <td style="text-align:right;">방문IP : ${vo.hostIp}</td>
 	    </tr>
 	  </table>
 	  
-	  <table class="table table-bordered mt-0">
+	  <table class="table table-bordered mt-0" style="width:100%">
 	    <tr>
 	      <th style="20%">성명</th>
 	      <td style="25%">${vo.name}</td>
 	      <th style="20%">방문일자</th>
 	      <td style="35%">${fn:substring(vo.visitDate,0,19)}</td>
 	    </tr>
-	    <tr>
-	      <th>방문소감</th>
-	      <td colspan="3" style="height:150px">${fn:replace(vo.content, newLine, '<br/>')}</td>
-	    </tr>
+			<tr>
+			  <th>방문소감</th>
+			  
+			  
+			  <td colspan="3" style="height:20%;">
+			  <c:set var="maxWords" value="80" />
+			    <c:choose>
+			      <c:when test="${fn:length(vo.content) > maxWords}">
+			        <c:set var="truncatedContent" value="${fn:substring(vo.content, 0, maxWords)}" />
+			        ${fn:replace(truncatedContent, newLine, '<br/>')}<br/>
+			      </c:when>
+			      <c:otherwise>
+			        ${fn:replace(vo.content, newLine, '<br/>')}<br/>
+			      </c:otherwise>
+			    </c:choose>
+			  </td>
+			  
+			  
+			</tr>
 	  </table>
 	  
 	  <br/>
@@ -150,6 +126,13 @@
 	    <c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/GuestList.gu?pageSize=${pageSize}&pag=${totPage}">마지막페이지</a></li></c:if>
 	  </ul>
   </div>
+</div>
+		</div>
+		<div class="col-2" style="width:200px">
+		
+			광고 띄울거야
+		</div>
+	</div>
 </div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import conn.GetConn;
 
@@ -221,4 +222,72 @@ public class MemberDAO {
 		pstmtClose();
 	}
 }
+	
+//회원 전체 건수 구하기
+	public int getTotRecCnt() {
+		int totRecCnt = 0;
+		try {
+			sql = "select count(idx) as cnt from B_member";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			getConn.rsClose();
+		}
+		return totRecCnt;
+	}
+	
+	
+//회원 전체 리스트처리
+	public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize) {
+		ArrayList<MemberVO> vos = new ArrayList<>();
+		try {
+			sql = "select *, timestampdiff(day, lastDate, now()) as deleteDiff from B_member order by idx desc limit ?,?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndexNo);
+			pstmt.setInt(2, pageSize);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				vo = new MemberVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setName(rs.getString("name"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setGender(rs.getString("gender"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setTel(rs.getString("tel"));
+				vo.setAddress(rs.getString("address"));
+				vo.setEmail(rs.getString("email"));
+				vo.setJob(rs.getString("job"));
+				vo.setPhoto(rs.getString("photo"));
+				vo.setContent(rs.getString("content"));
+				vo.setUserInfor(rs.getString("userInfor"));
+				vo.setUserDel(rs.getString("userDel"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLevel(rs.getInt("level"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setVisitCnt(rs.getInt("visitCnt"));
+				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vo.setSalt(rs.getString("salt"));
+				
+				vo.setDeleteDiff(rs.getInt("deleteDiff"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 에러 : " + e.getMessage());
+		} finally {
+			getConn.rsClose();
+		}
+		return vos;
+	}
+
+	
+	
+	
 }

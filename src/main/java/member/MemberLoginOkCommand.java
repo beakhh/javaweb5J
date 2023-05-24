@@ -73,6 +73,7 @@ public class MemberLoginOkCommand implements MemberInterface {
 		session.setAttribute("sLevel", vo.getLevel());
 		session.setAttribute("sLastDate", vo.getLastDate());
 		
+		// 등업 로그인 최종
 		if(vo.getLevel() == 4 && vo.getVisitCnt() >= 10) {
 			GuestCountVO vo1 = new GuestCountVO();
 			GuestDAO dao1 = new GuestDAO();

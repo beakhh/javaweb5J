@@ -10,11 +10,15 @@
 	<title>memberMyPage</title>
 		<jsp:include page="/include/bs4.jsp"/>
 <style>
+  	body {
+		  font-size: 12px;
+		  width: 100%;
+		}
   .table {
     display: table;
-    width: 80%;
-     height: 900px;
-    margin-left: 10%;
+    width:60%; 
+    margin-left:20%;
+    height: 50%;
     border-collapse: collapse;
     table-layout: fixed;
   }

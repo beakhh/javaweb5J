@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import member.MemberLogoutCommand;
+
 @SuppressWarnings("serial")
 @WebServlet("*.gu")
 public class GuestController extends HttpServlet {
@@ -29,28 +31,14 @@ public class GuestController extends HttpServlet {
 		else if(com.equals("/GuestInput")) {
 			viewPage += "/guestInput.jsp";
 		}
-		
 		else if(com.equals("/GuestInputOk")) {
 			command = new GuestInputOkCommand();
 			command.execute(request, response);
 			viewPage = "/include/message.jsp";
 		}
-		
 		else if(com.equals("/AdminLogin")) {
 			viewPage += "/adminLogin.jsp";
 		}
-		else if(com.equals("/AdminLoginOk")) {
-			command = new AdminLoginOkCommand();
-			command.execute(request, response);
-			viewPage = "/include/message.jsp";
-		}
-		
-		else if(com.equals("/AdminLogout")) {
-			command = new AdminLogoutCommand();
-			command.execute(request, response);
-			viewPage = "/include/message.jsp";
-		}
-		
 		else if(com.equals("/GuestDelete")) {
 			command = new GuestDeleteCommand();
 			command.execute(request, response);

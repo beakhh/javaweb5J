@@ -3,7 +3,10 @@
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <head>
 	<style>
-	</style>
+  	body {
+		  font-size: 12px;
+		}
+  </style>
 </head>
 
 <div class=" text-center" style="margin-top:0; height:300px; width:100% ">

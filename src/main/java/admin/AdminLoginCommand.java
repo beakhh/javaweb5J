@@ -1,4 +1,4 @@
-package guest;
+package admin;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import conn.SecurityUtil;
 import member.MemberDAO;
 import member.MemberVO;
 
-public class AdminLoginOkCommand implements GuestInterface {
+public class AdminLoginCommand implements AeminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,7 +24,7 @@ public class AdminLoginOkCommand implements GuestInterface {
 		
 		if(!vo.getMid().equals("admin") || vo.getLevel() > 2) {
 			request.setAttribute("msg", "로그인 권한이 없습니다. ");
-			request.setAttribute("url", request.getContextPath()+"/GuestList.gu");
+			request.setAttribute("url", request.getContextPath()+"/");
 			return;
 		}
 		
@@ -39,14 +39,14 @@ public class AdminLoginOkCommand implements GuestInterface {
 		
 		if(res == "1") {
 			HttpSession session = request.getSession();
-			session.setAttribute("sAdmin", "adminOk");
+			session.setAttribute("sAdmin", mid);
 			
 			request.setAttribute("msg", "관리자 인증 성공!!!");
-			request.setAttribute("url", request.getContextPath()+"/GuestList.gu");
+			request.setAttribute("url", request.getContextPath()+"/AdminMyPage.admin");
 		}
 		else {
 			request.setAttribute("msg", "관리자 인증 실패~~");
-			request.setAttribute("url", request.getContextPath()+"/AdminLogin.gu");
+			request.setAttribute("url", request.getContextPath()+"/");
 		}
 	}
 

@@ -4,6 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<style>
+  	body {
+		  font-size: 12px;
+		}
+  </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>guestInput.jsp</title>
@@ -19,10 +24,10 @@
   <form name="myform" method="post" action="${ctp}/GuestInputOk.gu" class="was-validated">
   
     <div class="form-group">
-      <label for="name">성명</label>
-      <input type="text" class="form-control" id="name" value="${sMid}" placeholder="Enter username" name="name" required />
+      <label for="name">닉네임/성명</label>
+      <input type="text" class="form-control" id="nickName" name="nickName" value="${sNickName}" placeholder="Enter username"  required />
       <div class="valid-feedback">Ok!!!</div>
-      <div class="invalid-feedback">성명을 입력해 주세요.</div>
+      <div class="invalid-feedback">닉네임/성명 을 입력해 주세요.</div>
     </div>
     
     <div class="form-group">
@@ -40,8 +45,6 @@
     
     
     <input type="hidden" name="hostIp" value="<%=request.getRemoteAddr()%>"/>
-    <input type="hidden" name="mid" value="${sMid}"/>
-    
     
   </form>
 </div>

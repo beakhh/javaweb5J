@@ -13,6 +13,9 @@
       background-color: #eee;
       text-align: center;
     }
+  	body {
+		  font-size: 12px;
+		}
   </style>
 </head>
 <body>

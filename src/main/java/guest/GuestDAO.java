@@ -194,4 +194,56 @@ public class GuestDAO {
 			pstmtClose();
 		}
 	}
+
+	// 있는거 다 가져오기
+	public ArrayList<GuestVO> getMemberList() {
+		ArrayList<GuestVO> vos = new ArrayList<>();
+		try {
+			sql="select * from B_guest;";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				vo = new GuestVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setName(rs.getString("name"));
+				vo.setMid(rs.getString("mid"));
+				vo.setContent(rs.getString("content"));
+				vo.setVisitDate(rs.getString("visitDate"));
+				vo.setHostIp(rs.getString("hostip"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	// 아이디 있는 것만 가져오기
+	public ArrayList<GuestVO> getMidList() {
+		ArrayList<GuestVO> vos = new ArrayList<>();
+		try {
+			sql="select * from B_guest where mid is not null;";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				vo = new GuestVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setName(rs.getString("name"));
+				vo.setMid(rs.getString("mid"));
+				vo.setContent(rs.getString("content"));
+				vo.setVisitDate(rs.getString("visitDate"));
+				vo.setHostIp(rs.getString("hostip"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
 }

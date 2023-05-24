@@ -15,6 +15,7 @@
 	  color:#000;
 	  background:#white;
 	  font:600 16px/18px 'Open Sans',sans-serif;
+	  font-size: 12px;
 	}
 	*,:after,:before{box-sizing:border-box}
 	.clearfix:after,.clearfix:before{content:'';display:table}

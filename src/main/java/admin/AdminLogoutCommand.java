@@ -1,4 +1,4 @@
-package guest;
+package admin;
 
 import java.io.IOException;
 
@@ -7,16 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class AdminLogoutCommand implements GuestInterface {
+public class AdminLogoutCommand implements AeminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		session.removeAttribute("sAdmin");
-		
-		request.setAttribute("msg", "관리자 로그아웃처리 되었습니다.");
-		request.setAttribute("url", request.getContextPath()+"/GuestList.gu");
+		request.setAttribute("msg", "관리자 전용 페이지에서 로그아웃 되었습니다.");
+		request.setAttribute("url", request.getContextPath() + "/");
 	}
 
 }

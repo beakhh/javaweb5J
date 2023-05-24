@@ -1,4 +1,4 @@
-package guest;
+package admin;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,11 +7,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class GuestListCommand implements GuestInterface {
+import guest.GuestDAO;
+import guest.GuestVO;
+
+public class AdminGuestToolCommand implements AeminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		GuestDAO dao = new GuestDAO();
+GuestDAO dao = new GuestDAO();
 		
 		// 1. 현재 페이지번호를 구한다.
 		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
@@ -54,5 +57,4 @@ public class GuestListCommand implements GuestInterface {
 		request.setAttribute("curBlock", curBlock);
 		request.setAttribute("lastBlock", lastBlock);
 	}
-
 }
