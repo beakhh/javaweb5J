@@ -99,6 +99,11 @@ public class BoardController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/boardSearchMember.jsp";
 		}
+		else if(com.equals("/BoardShowNumCheck")) {
+			command = new BoardShowNumCheckCommand();
+			command.execute(request, response);
+			viewPage += "/boardList.jsp";
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);

@@ -172,7 +172,7 @@
 												<option value="3" ${showNum == "3" ? "selected" : ""}>우수회원</option>
 												<option value="4" ${showNum == "4" ? "selected" : ""}>운영자</option>
 												<option value="5" ${showNum == "5" ? "selected" : ""}>관리자</option>
-												<option value="5" ${showNum == "6" ? "selected" : ""}>공지전용</option>
+												<option value="6" ${showNum == "6" ? "selected" : ""}>공지전용</option>
 											</select>
 											<input type="button" value="검색" onclick="selectCheck()" class="btn btn-primary"/> &nbsp;
 									</td>

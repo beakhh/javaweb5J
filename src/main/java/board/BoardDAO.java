@@ -420,10 +420,10 @@ public class BoardDAO {
 		return vos;
 	}
 
+	// 관리자게시판에서의 공개범위 조회
 	public ArrayList<BoardVO> getBoardPartCheck(int part, int showNum) {
 			ArrayList<BoardVO> vos = new ArrayList<>();
 			try {
-				System.out.println(part + " , " + showNum);
 				if(part == 0 && showNum == 0) {				// 둘다 전체일때
 					sql="select * from board";
 					pstmt = conn.prepareStatement(sql);
@@ -471,5 +471,47 @@ public class BoardDAO {
 			}
 			return vos;
 		}
+
+	// 게시판에서의 공개여부 조회
+	public ArrayList<BoardVO> getBoardShowNumCheck(int showNumCheck) {
+		ArrayList<BoardVO> vos = new ArrayList<>();
+		try {
+			
+			if(showNumCheck == 0) {
+				sql="select * from board";
+			}
+			else {
+				sql="select * from board where showNum = ?";
+			}
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, showNumCheck);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				vo = new BoardVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setTitle(rs.getString("title"));
+				vo.setEmail(rs.getString("email"));
+				vo.setHomePage(rs.getString("homePage"));
+				vo.setContent(rs.getString("content"));
+				vo.setReadNum(rs.getInt("readNum"));
+				vo.setHostIp(rs.getString("hostIp"));
+				vo.setOpenSw(rs.getString("openSw"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setGood(rs.getInt("good"));
+				vo.setPart(rs.getInt("part"));
+				vo.setShowNum(rs.getInt("showNum"));
+				vos.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 1 : " + e.getMessage());
+		} finally {
+			getConn.rsClose();
+		}
+		return vos;
+	}
 
 	}

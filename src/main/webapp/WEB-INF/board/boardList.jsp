@@ -74,6 +74,13 @@
     		searchForm.submit();
     	}
     }
+    
+ // 회원 조회하기
+    function showNumShowCheck() {
+    	let showNumCheck = document.getElementById("showNumCheck").value;
+    	
+    	location.href = "${ctp}/BoardShowNumCheck.bo?pageSize=${pageSize}&showNumCheck="+showNumCheck;
+    }
   </script>
 </head>
 <body>
@@ -82,15 +89,29 @@
 
 <div class="table">
 	<div class="row" style="width:100%;">
-		<div class="col-8" style="width:60%; margin-left:15%">
-			<div class="asdf" style="width:80%; margin-left:15%;  ">
+		<div class="col-8" style="width:80%; margin-left:10%">
+			<div class="asdf" style="width:100%; margin-left:5%;  ">
 				<div class="card">
-				    <div class="card-header">
+				  <form>
+			    <div class="card-header">
 				  <h2 class="text-center">게 시 판 리 스 트</h2>
+				  
 				  <table class="table table-borderless">
 				    <tr>
-				      <td><c:if test="${sLevel != 1}"><a href="${ctp}/BoardInput.bo" class="btn btn-primary btn-sm">글쓰기</a></c:if></td>
+				      <td><c:if test="${sLevel != 0}"><a href="${ctp}/BoardInput.bo" class="btn btn-primary btn-sm">글쓰기</a></c:if></td>
 				      <td class="text-right">
+				      
+				      <!-- 등급별검색 -->
+					    	<select name="showNumCheck" id="showNumCheck" onchange="showNumShowCheck()">
+					        <option value="0" ${showNum == "0" ? "selected" : ""}>전체공개</option>
+									<option value="1" ${showNum == "1" ? "selected" : ""}>준회원</option>
+									<option value="2" ${showNum == "2" ? "selected" : ""}>정회원</option>
+									<option value="3" ${showNum == "3" ? "selected" : ""}>우수회원</option>
+									<option value="4" ${showNum == "4" ? "selected" : ""}>운영자</option>
+									<option value="5" ${showNum == "5" ? "selected" : ""}>관리자</option>
+									<option value="6" ${showNum == "6" ? "selected" : ""}>공지</option>
+					    	</select>
+					    	
 				        <!-- 한페이지 분량처리 -->
 				        <select name="pageSize" id="pageSize" onchange="pageCheck()">
 				          <option <c:if test="${pageSize == 3}">selected</c:if>>3</option>
@@ -100,25 +121,52 @@
 				          <option <c:if test="${pageSize == 20}">selected</c:if>>20</option>
 				        </select> 건
 				      </td>
+				      
 				    </tr>
 				  </table>
+				  
 				  <table class="table table-hover" style="width: 100%;">
 				  	<tr class="table-dark text-dark text-center">
-				    	<th style="width: 7%;">번호</th>
-				      <th style="width: 15%;">글제목</th>
-				      <th style="width: 50%;">글쓴이</th>
+				    	<th style="width: 8%;">번호</th>
+				      <th style="width: 50%;">글제목</th>
+				      <th style="width: 15%;">글쓴이</th>
 				      <th style="width: 10%;">글쓴날짜</th>
 				      <th style="width: 6%;">조회수</th>
 				      <th style="width: 6%;">좋아요</th>
 				    </tr>
 				    
 				    <c:forEach var="vo" items="${vos}" varStatus="st">
+					    <c:if test="${ (vo.showNum ==  6)}">
+					    	<tr class="text-center">
+						    	<td class = "badge badge-danger" style="margin-top:4.5px">
+						    		<a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left: 5%; color: white;">
+						    			공지
+						    		</a>
+						    	</td>
+						    	<td class="text-left">
+						    		<a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+						    	</td>
+					    		<td>${vo.nickName}</td>
+					        <td>
+					          <!-- 1일(24시간) 이내는 시간만 표시, 이후는 날짜와 시간을 표시 : 2023-05-04 10:35:25 -->
+					          <!-- 단(24시간안에 만족하는 자료), 날짜가 오늘날짜만 시간으로표시하고, 어제날짜는 날짜로 표시하시오. -->
+					          <c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
+					          <c:if test="${vo.hour_diff <= 24}">
+					            ${vo.day_diff == 0 ? fn:substring(vo.wDate,11,19) : fn:substring(vo.wDate,10,16)}
+					          </c:if>
+					        </td>
+						    	<td>${vo.readNum}</td>
+						    	<td>${vo.good}</td>
+					    	</tr>
+					    </c:if>
+				    </c:forEach>
+				    
+				    <c:forEach var="vo" items="${vos}" varStatus="st">
+				    <c:if test="${ (vo.showNum < 6)}">
 				      <tr class="text-center">
 				        <td>${curScrStartNo}</td>
 				        
 				        <td class="text-left">
-				        	
-				        	
 				          <c:if test="${(vo.openSw == 'OK' && sLevel == 4 && vo.showNum < 2)}">
 					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
@@ -128,8 +176,7 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				         
-				         
-				          <c:if test="${(vo.openSw == 'OK' && sLevel == 3 &&  vo.showNum < 3)}">
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 3 &&  vo.showNum < 3) }">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
@@ -138,8 +185,7 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
-				          
-				          <c:if test="${(vo.openSw == 'OK' && sLevel == 2 &&  vo.showNum < 4)}">
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 2 &&  vo.showNum < 4) }">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
@@ -149,7 +195,7 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
-				          <c:if test="${(vo.openSw == 'OK' && sLevel == 1 &&  vo.showNum < 5)}">
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 1 &&  vo.showNum < 5) }">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
@@ -159,39 +205,11 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
-				          <c:if test="${(vo.openSw == 'OK' && sLevel == 0 &&  vo.showNum < 5)}">
+				          <c:if test="${sLevel == 0}">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
-				          <c:if test="${(vo.openSw == 'OK' && sLevel == 0 &&  vo.showNum > 4)}">
-					        	 ${vo.title}
-				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
-				          </c:if>
-				          
-				          
-				           <%-- 
-				          
-				          <c:if test="${(vo.openSw == 'OK' && sLevel == 2 &&  vo.showNum < 4 && vo.showNum >0 ))}">
-					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
-				          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
-				          </c:if>
-				          
-				          
-				          
-				          <c:if test="${(vo.openSw == 'OK' && sLevel == 1 &&  vo.showNum < 5 && vo.showNum >0 ))}">
-					         <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
-				          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
-				          </c:if>
-				          
-				          
-				          <c:if test="${(vo.openSw == 'OK' || sLevel == 0) && ( vo.showNum < 5 && vo.showNum >0 ))}">
-					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
-				          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
-				          </c:if>
-				           --%>
-				          
-				          <%-- <c:if test="${vo.replyCount != 0}">(${vo.replyCount})</c:if> --%>
 				        </td>
 				        
 				        <td>${vo.nickName}</td>
@@ -207,10 +225,12 @@
 				        <td>${vo.good}</td>
 				      </tr>
 				      <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>
+				    </c:if>
 				    </c:forEach>
 				    <tr><td colspan="6" class="m-0 p-0"></td></tr>
 				  </table>
 				  </div>
+				  </form>
 				  </div>
 			  <!-- 블록 페이징 처리 -->
 			  <div class="text-center m-4">
@@ -225,7 +245,6 @@
 				    <c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="${ctp}/BoardList.bo?pageSize=${pageSize}&pag=${totPage}">마지막페이지</a></li></c:if>
 				  </ul>
 			  </div>
-  
   					<!-- 검색기 처리 -->
 			  <div class="container text-center">
 			    <form name="searchForm" method="post" action="${ctp}/BoardSearch.bo">
@@ -244,14 +263,12 @@
 			</div>
 		</div>
 		
-		<div class = "col">
+		<div class = "col" style="margin-left:5%; " >
 			광고 넣을거야
 		</div>
 		
 	</div>
 </div>
-
-
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />
 </body>
