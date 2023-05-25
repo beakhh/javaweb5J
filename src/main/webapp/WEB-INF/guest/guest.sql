@@ -25,3 +25,6 @@ create table B_gCount(
 );
 
 drop table B_gCount;
+
+
+select * from B_guest where mid is not null and mid != '';

@@ -59,8 +59,8 @@
     'use strict';
     
     function fCheck() {
-    	let title = myform.title.value;
-    	let content = myform.content.value;
+    	let title = myform1.title.value;
+    	let content = myform1.content.value;
     	
     	if(title.trim() == "") {
     		alert("게시글 제목을 입력하세요");
@@ -71,7 +71,7 @@
     		myform.content.focus();
     	}
     	else {
-    		myform.submit();
+    		myform1.submit();
     	}
     }
   </script>
@@ -84,7 +84,8 @@
 			<div class="asdf" style="width:80%; margin-left:15%;  ">
 				<div class="card">
 				  <h2 class="text-center">게 시 판 글 쓰 기</h2>
-				  <form name="myform" method="post" action="${ctp}/BoardInputOk.bo">
+				  
+				  <form name="myform1" method="post" action="${ctp}/BoardInputOk.bo">
 				    <table class="table table-bordered">
 				      <tr>
 				        <th>글쓴이</th>
@@ -127,19 +128,20 @@
 						        <option value="2" ${part=="2" ? "selected" : ""}>서양주</option>
 						        <option value="3" ${part=="3" ? "selected" : ""}>동양주</option>
 						      </select>
+						      
 						      <c:if test="${sLevel <2}">
 									  <select name="showNum" id="showNum" class="form-control" style="width:50%">
-									    <option value="4" ${showNum == 4 ? "selected" : ""}>전체공개</option>
-									    <option value="3" ${showNum == 3 ? "selected" : ""}>준회원</option>
+									    <option value="0" ${showNum == "0" ? "selected" : ""}>전체공개</option>
+									    <option value="1" ${showNum == "1" ? "selected" : ""}>준회원</option>
 									    
 									    <c:if test="${sLevel <2}">
-									      <option value="2" ${showNum == 2 ? "selected" : ""}>정회원</option>
-									      <option value="1" ${showNum == 1 ? "selected" : ""}>우수회원</option>
+									      <option value="2" ${showNum == "2" ? "selected" : ""}>정회원</option>
+									      <option value="3" ${showNum == "3" ? "selected" : ""}>우수회원</option>
 									    </c:if>
 									    
 									    <c:if test="${sLevel == 0}">
-									      <option value="0" ${showNum == "0" ? "selected" : ""}>관리자</option>
-									      <option value="0" ${showNum == "5" ? "selected" : ""}>공지사항</option>
+									      <option value="4" ${showNum == "4" ? "selected" : ""}>관리자</option>
+									      <option value="5" ${showNum == "5" ? "selected" : ""}>공지사항</option>
 									    </c:if>
 									    
 									  </select>

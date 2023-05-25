@@ -43,7 +43,6 @@
     	<button type="button" onclick="location.href='${ctp}/GuestList.gu';" class="btn btn-danger">돌아가기</button>
     </div>
     
-    
     <input type="hidden" name="hostIp" value="<%=request.getRemoteAddr()%>"/>
     
   </form>

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import conn.GetConn;
+import guest.GuestVO;
 
 public class BoardDAO {
 	// 싱클톤으로 선언된 DB연결객체(GetConn)을 연결한다.
@@ -418,5 +419,57 @@ public class BoardDAO {
 		}
 		return vos;
 	}
-	
-}
+
+	public ArrayList<BoardVO> getBoardPartCheck(int part, int showNum) {
+			ArrayList<BoardVO> vos = new ArrayList<>();
+			try {
+				System.out.println(part + " , " + showNum);
+				if(part == 0 && showNum == 0) {				// 둘다 전체일때
+					sql="select * from board";
+					pstmt = conn.prepareStatement(sql);
+				}
+				else if(part == 0 && showNum !=0) {			// 종류만 전체일때
+					sql="select * from board where showNum = ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, showNum);
+				}
+				else if(part != 0 && showNum ==0) {			// 공개여부만 전체일때
+					sql="select * from board where part = ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, part);
+				}
+				else if (part != 0 && showNum !=0) {			// 둘다 조건이 있을떄
+					sql="select * from board where part = ? and showNum = ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, part);
+					pstmt.setInt(2, showNum);
+				}
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					vo = new BoardVO();
+					vo.setIdx(rs.getInt("idx"));
+					vo.setMid(rs.getString("mid"));
+					vo.setNickName(rs.getString("nickName"));
+					vo.setTitle(rs.getString("title"));
+					vo.setEmail(rs.getString("email"));
+					vo.setHomePage(rs.getString("homePage"));
+					vo.setContent(rs.getString("content"));
+					vo.setReadNum(rs.getInt("readNum"));
+					vo.setHostIp(rs.getString("hostIp"));
+					vo.setOpenSw(rs.getString("openSw"));
+					vo.setwDate(rs.getString("wDate"));
+					vo.setGood(rs.getInt("good"));
+					vo.setPart(rs.getInt("part"));
+					vo.setShowNum(rs.getInt("showNum"));
+					vos.add(vo);
+				}
+			} catch (SQLException e) {
+				System.out.println("SQL 오류 1 : " + e.getMessage());
+			} finally {
+				getConn.pstmtClose();
+			}
+			return vos;
+		}
+
+	}

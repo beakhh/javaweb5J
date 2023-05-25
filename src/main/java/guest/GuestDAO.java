@@ -174,7 +174,6 @@ public class GuestDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			System.out.println("SQL 오류 : " + e.getMessage());
 		} finally {
@@ -182,6 +181,7 @@ public class GuestDAO {
 		}
 	}
 
+	// 삭제
 	public void setDeleteData(String mid) {
 		try {
 			sql = "delete from B_gCount where mid = ?";
@@ -194,40 +194,24 @@ public class GuestDAO {
 			pstmtClose();
 		}
 	}
-
-	// 있는거 다 가져오기
-	public ArrayList<GuestVO> getMemberList() {
+	
+	// 검색
+	public ArrayList<GuestVO> getMemberList(int midCheck) {
 		ArrayList<GuestVO> vos = new ArrayList<>();
 		try {
-			sql="select * from B_guest;";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				vo = new GuestVO();
-				vo.setIdx(rs.getInt("idx"));
-				vo.setName(rs.getString("name"));
-				vo.setMid(rs.getString("mid"));
-				vo.setContent(rs.getString("content"));
-				vo.setVisitDate(rs.getString("visitDate"));
-				vo.setHostIp(rs.getString("hostip"));
-				
-				vos.add(vo);
+			if(midCheck == 0) {
+				sql="select * from B_guest;	";
 			}
-		} catch (SQLException e) {
-			System.out.println("SQL 오류 : " + e.getMessage());
-		} finally {
-			rsClose();
-		}
-		return vos;
-	}
-
-	// 아이디 있는 것만 가져오기
-	public ArrayList<GuestVO> getMidList() {
-		ArrayList<GuestVO> vos = new ArrayList<>();
-		try {
-			sql="select * from B_guest where mid is not null;";
+			else if(midCheck == 1) {
+				sql="select * from B_guest where mid != ''; ";
+			}
+			else if(midCheck == 2) {
+				sql="select * from B_guest where  mid = '';";
+			}
+		
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
+		
 			while(rs.next()) {
 				vo = new GuestVO();
 				vo.setIdx(rs.getInt("idx"));
@@ -236,7 +220,7 @@ public class GuestDAO {
 				vo.setContent(rs.getString("content"));
 				vo.setVisitDate(rs.getString("visitDate"));
 				vo.setHostIp(rs.getString("hostip"));
-				
+			
 				vos.add(vo);
 			}
 		} catch (SQLException e) {

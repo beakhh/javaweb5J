@@ -26,7 +26,7 @@
 			<div class = "col-5" style="width:100%;"> <iframe  src="${ctp}/AdminBoardList.admin" name="adminBoardList" frameborder="0" style="width: 100%; height: 100%;"></iframe></div>
 			
 			
-			<div class = "col-7"> <iframe src="${ctp}/AdminBoardList.admin" name="adminGuestTool" frameborder="0" style="width: 100%; height: 100%;"></iframe></div>
+			<div class = "col-7"> <iframe src="${ctp}/AdminBoardTool.admin" name="adminGuestTool" frameborder="0" style="width: 100%; height: 100%;"></iframe></div>
 			
 			
 		</div>

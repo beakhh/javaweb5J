@@ -84,7 +84,6 @@
 				  <h2 class="text-center">게 시 판 리 스 트</h2>
 				  <table class="table table-borderless">
 				    <tr>
-				      <td><c:if test="${sLevel <4}"><a href="${ctp}/AdminBoardInput.admin" class="btn btn-primary btn-sm">글쓰기</a></c:if></td>
 				      <td class="text-right">
 				        <!-- 한페이지 분량처리 -->
 				        <select name="pageSize" id="pageSize" onchange="pageCheck()">
@@ -112,20 +111,8 @@
 				        <td>${curScrStartNo}</td>
 				        
 				        <td class="text-left">
-				          <c:if test="${(vo.openSw == 'OK' || sLevel < 4) && vo.showNum > 2}">
 					          <a href="${ctp}/AdminBoardContent.admin?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
-				          </c:if>
-				          
-				          <c:if test="${(vo.openSw == 'OK' || sLevel < 2) && vo.showNum < 2}">
-					          <a href="${ctp}/AdminBoardContent.admin?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
-					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
-				          </c:if>
-				          
-				          <c:if test="${vo.openSw != 'OK' && sLevel >2}">
-				          	${vo.title}
-				          </c:if>
-				          
 				        </td>
 				        <td>
 				        	<c:if test="${(sLevel ==0 )}">

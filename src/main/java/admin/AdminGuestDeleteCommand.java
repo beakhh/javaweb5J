@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import guest.GuestDAO;
 
-public class AdminMemberDeleteCommand implements AeminInterface {
+public class AdminGuestDeleteCommand implements AeminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -39,7 +39,7 @@
     	
     	$.ajax({
     		type   : "post",
-    		url    : "${ctp}/AdminMemberDelete.admin",
+    		url    : "${ctp}/AdminGuestDelete.admin",
     		data   : {changeItems   : changeItems},
     		success:function() {
   				alert("회원 삭제 완료!");
@@ -65,7 +65,7 @@
     function MidShowCheck() {
     	let midCheck = document.getElementById("midCheck").value;
     	
-    	location.href = "${ctp}/AdminMemberMidShow.admin?midCheck="+midCheck;
+    	location.href = "${ctp}/AdminGuestShow.admin?pageSize=${pageSize}&midCheck="+midCheck;
     }
     
     function pageCheck() {
@@ -74,10 +74,13 @@
     }
   </script>
 </head>
+
 <body>
+
 	<form name="myform">
 	  <h3 class="text-center">방명록 수정</h3>
 	  <br/>
+	  
 	  <table class="table table-borderless m-0 p-0">
 	    <tr>
 	      <td>
@@ -94,6 +97,7 @@
 	      	<select name="midCheck" id="midCheck" onchange="MidShowCheck()">
             <option value="0" ${midCheck == 0 ? "selected" : ""}>전체보기</option>
             <option value="1" ${midCheck == 1 ? "selected" : ""}>회원 보기</option>
+            <option value="2" ${midCheck == 2 ? "selected" : ""}>비회원 보기</option>
 	      	</select>
 	      	&nbsp;&nbsp;
 	      
@@ -112,7 +116,7 @@
 	<div>
 	  <table class="table table-hover text-center">
 	    <tr class="table-dark text-dark">
-	      <th>성명</th>
+	      <th>번호</th>
 	      <th>닉네임</th>
 	      <th>아이디</th>
 	      <th>내용</th>
@@ -121,12 +125,16 @@
 	    </tr>
 	    <c:forEach var="vo" items="${vos}" varStatus="st">
 	      <tr>
+	      
 	        <td>
 	          <input type="checkbox" class="chk" name="chk" name="chk" value="${vo.idx}"/> &nbsp;
 	          ${curScrStartNo}
 	        </td>
-	        <td><a href="${ctp}/AdminMemberInfor.ad?">${vo.name}</a></td>
+	        
+	        <td><a href="${ctp}/AdminMemberInfor.admin?mid=${vo.mid}&pag=${pag}&pageSize=${pageSize}">${vo.name}</a></td>
+	        
 	        <td>${vo.mid}</td>
+	        
 	        <td>
 	        	<c:set var="maxWords" value="20" />
 				    <c:choose>
@@ -139,9 +147,11 @@
 				      </c:otherwise>
 				    </c:choose>
 	        </td>
+	        
 	        <td>${vo.visitDate}</td>
 	        <td>${vo.hostIp}</td>
 	        </tr>
+	        
 	      <c:set var="curScrStartNo" value="${curScrStartNo - 1}"/>
 	    </c:forEach>
 	    <tr><td colspan="8" class="m-0 p-0"></td></tr>

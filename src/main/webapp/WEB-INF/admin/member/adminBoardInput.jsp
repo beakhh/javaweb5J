@@ -51,6 +51,7 @@
   </style>
   <script>
     'use strict';
+    
   </script>
 </head>
 <body>
@@ -59,7 +60,7 @@
 		<div class="col" style="width:100%; ">
 			<div class="asdf " style="width:100%;  ">
 				<div class="card">
-				  <h2 class="text-center">게 시 판 글 쓰 기</h2>
+				  <h2 class="text-center">관리자 전용 게시판</h2>
 				  <form name="myform" method="post" action="${ctp}/BoardInputOk.bo">
 				    <table class="table table-bordered" style="margin-top:20px">
 				      <tr>
@@ -128,7 +129,7 @@
 				        <td colspan="2" class="text-center">
 				          <input type="button" value="글올리기" onclick="fCheck()" class="btn btn-primary"/> &nbsp;
 				          <input type="reset" value="다시입력" class="btn btn-warning"/> &nbsp;
-				          <input type="button" value="돌아가기" onclick="location.href='${ctp}/AdminBoardList.admin';" class="btn btn-secondary"/>
+				          <input type="button" value="돌아가기" onclick="history.back();" class="btn btn-secondary"/>
 				        </td>
 				      </tr>
 				    </table>

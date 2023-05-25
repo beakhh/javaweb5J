@@ -27,7 +27,7 @@ public class AdminController extends HttpServlet {
 		HttpSession session = request.getSession();
 		int level = session.getAttribute("sLevel")==null ? 99 : (int) session.getAttribute("sLevel");
 		
-		if(level > 2) {	// 비회원인경우는 초기화면으로 보내버린다.
+		if(level > 1) {	
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/");
 			dispatcher.forward(request, response);
 		}	
@@ -67,13 +67,13 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/member/adminGuestTool.jsp";
 		}
-		else if(com.equals("/AdminMemberMidShow")) {
-			command = new AdminMemberMidShowCommand();
+		else if(com.equals("/AdminGuestShow")) {
+			command = new AdminGuestShowCommand();
 			command.execute(request, response);
 			viewPage += "/member/adminGuestTool.jsp";
 		}
-		else if(com.equals("/AdminMemberDelete")) {
-			command = new AdminMemberDeleteCommand();
+		else if(com.equals("/AdminGuestDelete")) {
+			command = new AdminGuestDeleteCommand();
 			command.execute(request, response);
 			return;
 		}
@@ -83,17 +83,21 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/adminBoard.jsp";
 		}
-		else if(com.equals("/AdminMemberInfor")) {
-			command = new AdminMemberInforCommand();
-			command.execute(request, response);
-			viewPage += "/member/adminMemberInfor.jsp";
-		}
 		else if(com.equals("/AdminBoardList")) {
 			command = new AdminBoardListCommand();
 			command.execute(request, response);
 			viewPage += "/member/adminBoardList.jsp";
 		}
-		
+		else if(com.equals("/AdminBoardTool")) {
+			command = new AdminBoardToolCommand();
+			command.execute(request, response);
+			viewPage += "/member/adminBoardTool.jsp";
+		}
+		else if(com.equals("/AdminMemberInfor")) {
+			command = new AdminMemberInforCommand();
+			command.execute(request, response);
+			viewPage += "/member/adminMemberInfor.jsp";
+		}
 		else if(com.equals("/AdminBoardInput")) {
 			viewPage += "/member/adminBoardInput.jsp";
 		}
@@ -102,6 +106,18 @@ public class AdminController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/member/adminBoardContent.jsp";
 		}
+		else if(com.equals("/AdminBoardDelete")) {
+			command = new AdminBoardDeleteCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/AdminBoardToolShow")) {
+			command = new AdminBoardToolShowCommand();
+			command.execute(request, response);
+			viewPage += "/member/adminBoardTool.jsp";
+		}
+		
+		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);

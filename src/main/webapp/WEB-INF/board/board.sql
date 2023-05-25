@@ -18,6 +18,10 @@ create table board (
 	primary key(idx)
 );
 
+
+select * from board where part = 1; 
+select * from board;
+
 drop table board;
 
 desc board;
@@ -42,6 +46,7 @@ create table boardReply (
 );
 
 desc boardReply;
+
 
 
 /* 날짜함수 처리 연습 */

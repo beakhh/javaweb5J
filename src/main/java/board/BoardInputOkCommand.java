@@ -22,10 +22,7 @@ public class BoardInputOkCommand implements BoardInterface {
 		String hostIp = request.getParameter("hostIp")==null ? "" : request.getParameter("hostIp");
 		String openSw = request.getParameter("openSw")==null ? "" : request.getParameter("openSw");
 		int part = request.getParameter("part")==null ? 0 :Integer.parseInt(request.getParameter("part"));
-		int showNum = request.getParameter("showNum")==null ? 4 :Integer.parseInt(request.getParameter("showNum"));
-		
-		System.out.println(showNum);
-		System.out.println(part);
+		int showNum = request.getParameter("showNum")==null ? 0 :Integer.parseInt(request.getParameter("showNum"));
 		
 		BoardVO vo = new BoardVO();
 		

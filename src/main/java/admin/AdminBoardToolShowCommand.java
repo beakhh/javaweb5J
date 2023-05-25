@@ -7,27 +7,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import guest.GuestDAO;
-import guest.GuestVO;
+import board.BoardDAO;
+import board.BoardVO;
 
-public class AdminMemberMidShowCommand implements AeminInterface {
+public class AdminBoardToolShowCommand implements AeminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int midCheck = request.getParameter("midCheck")==null ? 0 : Integer.parseInt(request.getParameter("midCheck"));
-		GuestDAO dao = new GuestDAO();
-		
-		ArrayList<GuestVO> vos = null;
-		
-		if(midCheck == 0) {
-			vos = dao.getMemberList();
-		}
-		else if(midCheck == 1) {
-			vos = dao.getMidList();
-		}
-		
+
 		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
-		int pageSize = request.getParameter("pageSize")==null ? 20 : Integer.parseInt(request.getParameter("pageSize"));
+		int pageSize = request.getParameter("pageSize")==null ? 1 : Integer.parseInt(request.getParameter("pageSize"));
+		
+		int part = request.getParameter("part")==null ? 0 :Integer.parseInt(request.getParameter("part"));
+		int showNum = request.getParameter("showNum")==null ? 0 :Integer.parseInt(request.getParameter("showNum"));
+		
+		BoardDAO dao = new BoardDAO();
+		
+		ArrayList<BoardVO> vos = null;
+		
 		int totRecCnt = dao.getTotRecCnt();
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1 ;
 		int startIndexNo = (pag - 1) * pageSize;
@@ -38,9 +35,12 @@ public class AdminMemberMidShowCommand implements AeminInterface {
 		int curBlock = (pag - 1) / blockSize;
 		int lastBlock = (totPage - 1) / blockSize;
 		
+		vos = dao.getBoardPartCheck(part,showNum);
+		
 		request.setAttribute("pag", pag);
-		request.setAttribute("midCheck", midCheck);
 		request.setAttribute("vos", vos);
+		request.setAttribute("part", part);
+		request.setAttribute("showNum", showNum);
 		request.setAttribute("totPage", totPage);
 		request.setAttribute("curScrStartNo", curScrStartNo);
 		request.setAttribute("pageSize", pageSize);
@@ -48,5 +48,4 @@ public class AdminMemberMidShowCommand implements AeminInterface {
 		request.setAttribute("curBlock", curBlock);
 		request.setAttribute("lastBlock", lastBlock);
 	}
-
 }

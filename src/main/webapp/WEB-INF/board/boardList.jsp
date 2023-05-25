@@ -117,21 +117,79 @@
 				        <td>${curScrStartNo}</td>
 				        
 				        <td class="text-left">
-				        	<%-- <c:if test="${vo.showNum }"></c:if> --%>
-				          <c:if test="${(vo.openSw == 'OK' || sLevel < 4) && vo.showNum > 2}">
+				        	
+				        	
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 4 && vo.showNum < 2)}">
 					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
-					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
-				          
-				          <c:if test="${(vo.openSw == 'OK' || sLevel < 2) && vo.showNum < 2}">
-					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
-					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
-				          </c:if>
-				          
-				          <c:if test="${vo.openSw != 'OK' && sLevel >6}">
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 4 && vo.showNum > 1)}">
 				          	${vo.title}
+				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				         
+				         
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 3 &&  vo.showNum < 3)}">
+						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 3 &&  vo.showNum > 2)}">
+					        	 ${vo.title}
+				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 2 &&  vo.showNum < 4)}">
+						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 2 &&  vo.showNum > 3)}">
+					        	 ${vo.title}
+				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 1 &&  vo.showNum < 5)}">
+						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 1 &&  vo.showNum > 4)}">
+					        	 ${vo.title}
+				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 0 &&  vo.showNum < 5)}">
+						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 0 &&  vo.showNum > 4)}">
+					        	 ${vo.title}
+				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          
+				           <%-- 
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 2 &&  vo.showNum < 4 && vo.showNum >0 ))}">
+					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+				          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          
+				          
+				          <c:if test="${(vo.openSw == 'OK' && sLevel == 1 &&  vo.showNum < 5 && vo.showNum >0 ))}">
+					         <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+				          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				          
+				          
+				          <c:if test="${(vo.openSw == 'OK' || sLevel == 0) && ( vo.showNum < 5 && vo.showNum >0 ))}">
+					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
+				          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
+				          </c:if>
+				           --%>
 				          
 				          <%-- <c:if test="${vo.replyCount != 0}">(${vo.replyCount})</c:if> --%>
 				        </td>
