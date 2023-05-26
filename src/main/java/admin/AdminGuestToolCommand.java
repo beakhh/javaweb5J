@@ -14,8 +14,8 @@ public class AdminGuestToolCommand implements AeminInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-GuestDAO dao = new GuestDAO();
-		
+		GuestDAO dao = new GuestDAO();
+
 		// 1. 현재 페이지번호를 구한다.
 		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
 		

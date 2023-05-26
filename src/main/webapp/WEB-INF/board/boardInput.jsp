@@ -64,11 +64,11 @@
     	
     	if(title.trim() == "") {
     		alert("게시글 제목을 입력하세요");
-    		myform.title.focus();
+    		myform1.title.focus();
     	}
     	else if(content.trim() == "") {
     		alert("게시글 내용을 입력하세요");
-    		myform.content.focus();
+    		myform1.content.focus();
     	}
     	else {
     		myform1.submit();

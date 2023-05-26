@@ -421,28 +421,36 @@ public class BoardDAO {
 	}
 
 	// 관리자게시판에서의 공개범위 조회
-	public ArrayList<BoardVO> getBoardPartCheck(int part, int showNum) {
+	public ArrayList<BoardVO> getBoardPartCheck(int part, int showNum, int startIndexNo, int pageSize) {
 			ArrayList<BoardVO> vos = new ArrayList<>();
 			try {
 				if(part == 0 && showNum == 0) {				// 둘다 전체일때
-					sql="select * from board";
+					sql="select * from board order by idx desc limit ?,?";
 					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, startIndexNo);
+					pstmt.setInt(2, pageSize);
 				}
 				else if(part == 0 && showNum !=0) {			// 종류만 전체일때
-					sql="select * from board where showNum = ?";
+					sql="select * from board where showNum = ?  order by idx desc limit ?,? ";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setInt(1, showNum);
+					pstmt.setInt(2, startIndexNo);
+					pstmt.setInt(3, pageSize);
 				}
 				else if(part != 0 && showNum ==0) {			// 공개여부만 전체일때
-					sql="select * from board where part = ?";
+					sql="select * from board where part = ? order by idx desc limit ?,? ";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setInt(1, part);
+					pstmt.setInt(2, startIndexNo);
+					pstmt.setInt(3, pageSize);
 				}
 				else if (part != 0 && showNum !=0) {			// 둘다 조건이 있을떄
-					sql="select * from board where part = ? and showNum = ?";
+					sql="select * from board where part = ? and showNum = ? order by idx desc limit ?,? ";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setInt(1, part);
 					pstmt.setInt(2, showNum);
+					pstmt.setInt(3, startIndexNo);
+					pstmt.setInt(4, pageSize);
 				}
 				rs = pstmt.executeQuery();
 				

@@ -119,9 +119,6 @@
 					          <a href="${ctp}/AdminMemberInfor.admin?mid=${vo.mid}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;"> ${vo.nickName}</a>
 				          </c:if>
 				        </td>
-				        
-				        
-				        
 				        <td>
 				          <c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
 				          <c:if test="${vo.hour_diff <= 24}">

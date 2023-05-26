@@ -12,8 +12,8 @@
     'use strict';
     
     function sendCheck() {
-    	opener.window.document.myform.nickName.value = '${nickName}';
-    	opener.window.document.myform.name.focus();
+    	opener.window.document.myforma.nickName.value = '${nickName}';
+    	opener.window.document.myforma.name.focus();
     	window.close();
     }
     

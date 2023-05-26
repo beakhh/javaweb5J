@@ -196,38 +196,40 @@ public class GuestDAO {
 	}
 	
 	// 검색
-	public ArrayList<GuestVO> getMemberList(int midCheck) {
-		ArrayList<GuestVO> vos = new ArrayList<>();
-		try {
-			if(midCheck == 0) {
-				sql="select * from B_guest;	";
-			}
-			else if(midCheck == 1) {
-				sql="select * from B_guest where mid != ''; ";
-			}
-			else if(midCheck == 2) {
-				sql="select * from B_guest where  mid = '';";
-			}
-		
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-		
-			while(rs.next()) {
-				vo = new GuestVO();
-				vo.setIdx(rs.getInt("idx"));
-				vo.setName(rs.getString("name"));
-				vo.setMid(rs.getString("mid"));
-				vo.setContent(rs.getString("content"));
-				vo.setVisitDate(rs.getString("visitDate"));
-				vo.setHostIp(rs.getString("hostip"));
-			
-				vos.add(vo);
-			}
-		} catch (SQLException e) {
-			System.out.println("SQL 오류 : " + e.getMessage());
-		} finally {
-			rsClose();
-		}
-		return vos;
+	public ArrayList<GuestVO> getMemberList(int midCheck, int startIndexNo, int pageSize) {
+    ArrayList<GuestVO> vos = new ArrayList<>();
+    try {
+      if (midCheck == 0) {
+        sql = "select * from B_guest order by idx desc limit ?, ?";
+      } 
+      else if (midCheck == 1) {
+        sql = "select * from B_guest where mid != '' order by idx desc limit ?, ?";
+      } 
+      else if (midCheck == 2) {
+        sql = "select * from B_guest where mid = '' order by idx desc limit ?, ?";
+      }
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setInt(1, startIndexNo);
+      pstmt.setInt(2, pageSize);
+
+      rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        GuestVO vo = new GuestVO();
+        vo.setIdx(rs.getInt("idx"));
+        vo.setName(rs.getString("name"));
+        vo.setMid(rs.getString("mid"));
+        vo.setContent(rs.getString("content"));
+        vo.setVisitDate(rs.getString("visitDate"));
+        vo.setHostIp(rs.getString("hostip"));
+
+        vos.add(vo);
+      }
+    } catch (SQLException e) {
+        System.out.println("SQL 오류: " + e.getMessage());
+    } finally {
+        rsClose();
+    }
+    return vos;
 	}
 }

@@ -23,7 +23,7 @@
   <hr/>
   <p><a href="${ctp}/AdminBoard.admin" target="adminContent">게시판리스트</a></p>
   <hr/>
-  <p><a href="${ctp}/AdminMemberList.ad" target="adminContent">회원리스트</a></p>
+  <p><a href="${ctp}/AdminMemberList.admin" target="adminContent">회원리스트</a></p>
   
   <c:if test="${sAdmin != null}"><a href="${ctp}/" target="_top" class="btn btn-danger btn-sm"> 관리자로그아웃</a></c:if>
   

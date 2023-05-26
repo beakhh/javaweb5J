@@ -173,48 +173,33 @@
     	
     	let regMid = /^[a-zA-Z0-9_]{4,20}$/;
     	let regPwd = /(?=.*[0-9a-zA-Z]).{4,20}$/;
-      let regNickName = /^[가-힣]+$/;
+      let regNickName = /^[가-힣0-9]+$/;
       let regName = /^[가-힣a-zA-Z]+$/;
       
-    	let mid = myform.mid.value.trim();
-    	let pwd = myform.pwd.value;
-    	let nickName = myform.nickName.value;
-    	let name = myform.name.value;
-      
-    	/*
-      let regEmail =/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
-      let regURL = /^(https?:\/\/)?([a-z\d\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$/;
-    	let regTel = /\d{2,3}-\d{3,4}-\d{4}$/g;
-    	
-    	let email1 = myform.email1.value.trim();
-    	let email2 = myform.email2.value;
-    	let email = email1 + "@" + email2;
-    	let homePage = myform.homePage.value;
-    	let tel1 = myform.tel1.value;
-    	let tel2 = myform.tel2.value.trim();
-    	let tel3 = myform.tel3.value.trim();
-    	let tel = tel1 + "-" + tel2 + "-" + tel3;
-	*/
+    	let mid = myforma.mid.value.trim();
+    	let pwd = myforma.pwd.value;
+    	let nickName = myforma.nickName.value;
+    	let name = myforma.name.value;
     	let submitFlag = 0;		// 모든 체크가 정상으로 종료되게되면 submitFlag는 1로 변경처리될수 있게 한다.
     	
     	if(!regMid.test(mid)) {
     		alert("아이디는 4~20자리의 영문 소/대문자와 숫자, 언더바(_)만 사용가능합니다.");
-    		myform.mid.focus();
+    		myforma.mid.focus();
     		return false;
     	}
     	else if(!regPwd.test(pwd)) {
         alert("비밀번호는 1개이상의 문자와 특수문자 조합의 6~24 자리로 작성해주세요.");
-        myform.pwd.focus();
+        myforma.pwd.focus();
         return false;
       }
       else if(!regName.test(name)) {
         alert("성명은 한글과 영문대소문자만 사용가능합니다.");
-        myform.name.focus();
+        myforma.name.focus();
         return false;
       }
       else if(!regNickName.test(nickName)) {
         alert("닉네임은 한글만 사용가능합니다.");
-        myform.nickName.focus();
+        myforma.nickName.focus();
         return false;
       }
       else {
@@ -231,7 +216,7 @@
     			document.getElementById("nickNameBtn").focus();
     		}
     		else {
-		    	myform.submit();
+		    	myforma.submit();
     		}
     	}
     	else {
@@ -242,39 +227,35 @@
 	
 	// 아이디 중복체크
     function idCheck() {
-    	let mid = myform.mid.value;
+    	let mid = myforma.mid.value;
     	let url = "${ctp}/MemberIdCheck.mem?mid="+mid;
     	
     	if(mid.trim() == "") {
     		alert("아이디를 입력하세요!");
-    		myform.mid.focus();
+    		myforma.mid.focus();
     	}
     	else {
     		idCheckSw = 1;
-    		myform.mid.readOnly = true;
+    		myforma.mid.readOnly = true;
     		window.open(url,"nWin","width=580px,height=250px");
     	}
     }
     
     // 닉네임 중복체크
     function nickCheck() {
-    	let nickName = myform.nickName.value;
+    	let nickName = myforma.nickName.value;
     	let url = "${ctp}/MemberNickCheck.mem?nickName="+nickName;
     	
     	if(nickName.trim() == "") {
     		alert("닉네임을 입력하세요!");
-    		myform.nickName.focus();
+    		myforma.nickName.focus();
     	}
     	else {
     		nickCheckSw = 1;
-    		myform.nickName.readOnly = true;
+    		myforma.nickName.readOnly = true;
     		window.open(url,"nWin","width=580px,height=250px");
     	}
     }
-    
-    
-    
-    
     	
 	</script>
 </head>
@@ -317,7 +298,7 @@
         </div>
       </div>
       	          
-      <form name="myform" method="post" action="${ctp}/MemberJoinOk.mem">
+      <form name="myforma" method="post" action="${ctp}/MemberJoinOk.mem">
 	      <div class="sign-up-htm">
 	        <div class="group">
 	          <label for="mid" class="label">아이디  &nbsp; &nbsp;<input type="button" value="아이디 중복체크" id="midBtn" class="btn btn-custom btn-sm" onclick="idCheck()"/> </label>

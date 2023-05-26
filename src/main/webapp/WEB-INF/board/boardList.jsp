@@ -161,11 +161,37 @@
 					    </c:if>
 				    </c:forEach>
 				    
+				    <!-- 이벤트 전용 공지글 -->
+				    <c:forEach var="vo" items="${vos}" varStatus="st">
+					    <c:if test="${ (vo.showNum ==  7)}">
+					    	<tr class="text-center">
+						    	<td class = "badge badge-success" style="margin-top:4.5px">
+						    		<a href="${ctp}/EventList.ev" style="margin-left: 5%; color: white;">
+						    			이벤트
+						    		</a>
+						    	</td>
+						    	<td class="text-left">${vo.title}</td>
+					    		<td>${vo.nickName}</td>
+					        <td>
+					          <!-- 1일(24시간) 이내는 시간만 표시, 이후는 날짜와 시간을 표시 : 2023-05-04 10:35:25 -->
+					          <!-- 단(24시간안에 만족하는 자료), 날짜가 오늘날짜만 시간으로표시하고, 어제날짜는 날짜로 표시하시오. -->
+					          <c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
+					          <c:if test="${vo.hour_diff <= 24}">
+					            ${vo.day_diff == 0 ? fn:substring(vo.wDate,11,19) : fn:substring(vo.wDate,10,16)}
+					          </c:if>
+					        </td>
+						    	<td>${vo.readNum}</td>
+						    	<td>${vo.good}</td>
+					    	</tr>
+					    </c:if>
+				    </c:forEach>
+				    
 				    <c:forEach var="vo" items="${vos}" varStatus="st">
 				    <c:if test="${ (vo.showNum < 6)}">
 				      <tr class="text-center">
 				        <td>${curScrStartNo}</td>
 				        
+				        <!-- 준회원만 -->
 				        <td class="text-left">
 				          <c:if test="${(vo.openSw == 'OK' && sLevel == 4 && vo.showNum < 2)}">
 					          <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
@@ -176,6 +202,7 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				         
+				         <!-- 정회원만 -->
 				          <c:if test="${(vo.openSw == 'OK' && sLevel == 3 &&  vo.showNum < 3) }">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
@@ -185,6 +212,7 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
+				          <!-- 우수회원만 -->
 				          <c:if test="${(vo.openSw == 'OK' && sLevel == 2 &&  vo.showNum < 4) }">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
@@ -195,6 +223,7 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
+				          <!-- 운영자만 -->
 				          <c:if test="${(vo.openSw == 'OK' && sLevel == 1 &&  vo.showNum < 5) }">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
@@ -205,6 +234,7 @@
 				          	<c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>
 				          </c:if>
 				          
+				          <!-- 관리자만 -->
 				          <c:if test="${sLevel == 0}">
 						        <a href="${ctp}/BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}" style="margin-left:5%;">${vo.title}</a>
 					          <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif"/></c:if>

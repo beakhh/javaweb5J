@@ -62,25 +62,20 @@
     });
     
     // 회원 조회하기
-    function MidShowCheck() {
-    	let midCheck = document.getElementById("midCheck").value;
-    	
-    	location.href = "${ctp}/AdminGuestShow.admin?pageSize=${pageSize}&midCheck="+midCheck;
-    }
     
-    function pageCheck() {
+    function gselectCheck() {
     	let pageSize = document.getElementById("pageSize").value;
-    	location.href = "${ctp}/AminGuestTool.admin?pag=${pag}&pageSize="+pageSize;
+    	let midCheck = myform.midCheck.value;
+    	location.href = "${ctp}/AdminGuestShow.admin?pag=${pag}&midCheck="+midCheck+"&pageSize="+pageSize;
     }
   </script>
 </head>
 
 <body>
 
-	<form name="myform">
 	  <h3 class="text-center">방명록 수정</h3>
 	  <br/>
-	  
+	<form name="myform" method="post" action="${ctp}/.admin">
 	  <table class="table table-borderless m-0 p-0">
 	    <tr>
 	      <td>
@@ -94,25 +89,26 @@
 	      </td>
 	      <td class="text-right;" style=" padding:13px;">
 	      	<!-- 등급별검색 -->
-	      	<select name="midCheck" id="midCheck" onchange="MidShowCheck()">
+	      	<select name="midCheck" id="midCheck">
             <option value="0" ${midCheck == 0 ? "selected" : ""}>전체보기</option>
             <option value="1" ${midCheck == 1 ? "selected" : ""}>회원 보기</option>
             <option value="2" ${midCheck == 2 ? "selected" : ""}>비회원 보기</option>
 	      	</select>
-	      	&nbsp;&nbsp;
 	      
 	        <!-- 한페이지 분량처리 -->
-	        <select name="pageSize" id="pageSize" onchange="pageCheck()">
+	        <select name="pageSize" id="pageSize">
 	          <option <c:if test="${pageSize == 3}">selected</c:if>>3</option>
 	          <option <c:if test="${pageSize == 5}">selected</c:if>>5</option>
 	          <option <c:if test="${pageSize == 10}">selected</c:if>>10</option>
 	          <option <c:if test="${pageSize == 15}">selected</c:if>>15</option>
 	          <option <c:if test="${pageSize == 20}">selected</c:if>>20</option>
 	        </select> 건
+	        <input type="button" value="검색" onclick="gselectCheck()" class="btn btn-primary"/> &nbsp;
 	      </td>
 	    </tr>
 	  </table>
-
+	  <input type="hidden" name="pag" value="${pag}" />
+  </form>
 	<div>
 	  <table class="table table-hover text-center">
 	    <tr class="table-dark text-dark">
@@ -173,6 +169,5 @@
 		  </ul>
 	  </div>
 	  <!-- <input type="hidden" name="changeItems"/> -->
-  </form>
 </body>
 </html>

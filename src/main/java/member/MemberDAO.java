@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import board.BoardVO;
 import conn.GetConn;
 
 public class MemberDAO {
@@ -286,7 +287,74 @@ public class MemberDAO {
 		}
 		return vos;
 	}
-
+	public ArrayList<MemberVO> getMemberListLevelCheck(int levelShow, int startIndexNo, int pageSize) {
+		ArrayList<MemberVO> vos = new ArrayList<>();
+		try {
+			if(levelShow == 9) {
+				sql="select * from B_member order by idx desc limit ?,?";
+				pstmt= conn.prepareStatement(sql);
+				pstmt.setInt(1, startIndexNo);
+				pstmt.setInt(2, pageSize);
+			}
+			else {
+				sql="select * from B_member where level = ? order by idx desc limit ?,?";
+				pstmt= conn.prepareStatement(sql);
+				pstmt.setInt(1, levelShow);
+				pstmt.setInt(2, startIndexNo);
+				pstmt.setInt(3, pageSize);
+			}
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				vo = new MemberVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setName(rs.getString("name"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setGender(rs.getString("gender"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setTel(rs.getString("tel"));
+				vo.setAddress(rs.getString("address"));
+				vo.setEmail(rs.getString("email"));
+				vo.setJob(rs.getString("job"));
+				vo.setPhoto(rs.getString("photo"));
+				vo.setContent(rs.getString("content"));
+				vo.setUserInfor(rs.getString("userInfor"));
+				vo.setUserDel(rs.getString("userDel"));
+				vo.setPoint(rs.getInt("point"));
+				vo.setLevel(rs.getInt("level"));
+				vo.setLastDate(rs.getString("lastDate"));
+				vo.setVisitCnt(rs.getInt("visitCnt"));
+				vo.setTodayCnt(rs.getInt("todayCnt"));
+				vo.setSalt(rs.getString("salt"));
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 1 : " + e.getMessage());
+		} finally {
+			getConn.rsClose();
+		}
+		return vos;
+	}
+	
+	//선택한 레벨 변경
+		public String setMemberLevelChange(int level, int idx) {
+			String res = "0";
+			try {
+				sql = "update B_member set level = ? where idx = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, level);
+				pstmt.setInt(2, idx);
+				pstmt.executeUpdate();
+				res = "1";
+			} catch (SQLException e) {
+				System.out.println("SQL 오류 : " + e.getMessage());
+			} finally {
+				getConn.pstmtClose();
+			}
+			return res;
+		}
 	
 	
 	

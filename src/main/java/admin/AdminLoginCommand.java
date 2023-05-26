@@ -22,7 +22,7 @@ public class AdminLoginCommand implements AeminInterface {
 		
 		MemberVO vo = dao.getMemberMidCheck(mid);
 		
-		if(!vo.getMid().equals("admin") || vo.getLevel() > 2) {
+		if(!vo.getMid().equals("admin") || vo.getLevel() > 1) {
 			request.setAttribute("msg", "로그인 권한이 없습니다. ");
 			request.setAttribute("url", request.getContextPath()+"/");
 			return;

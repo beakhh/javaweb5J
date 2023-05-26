@@ -89,16 +89,24 @@
     		});
     	});
     });
+  
+ // 분류 조회하기
+		function selectCheck() {
+	    let part = myform.part.value;
+	    let pageSize = myform.pageSize.value;
+	    let showNum = myform.showNum.value;
+	    location.href = "${ctp}/AdminBoardToolShow.admin?pag=${pag}&pageSize="+pageSize+"&part=" + part + "&showNum=" + showNum;
+		}
     
  // 삭제
-    function memberDelete(idx) {
+    function deleteCheck() {
     	let ans = confirm("선택한 게시글을 삭제 하시겠습니까?");
     	if(!ans) return false;
     	
   		let changeItems = "";
     	
-    	for(var i=0; i<myform.chk.length; i++) {
-  			if(myform.chk[i].checked==true) changeItems += myform.chk[i].value + "/";
+    	for(var i=0; i<myform1.chk.length; i++) {
+  			if(myform1.chk[i].checked==true) changeItems += myform1.chk[i].value + "/";
   		}
     	changeItems = changeItems.substring(0,changeItems.length-1);
     	
@@ -115,21 +123,6 @@
     			alert("전송 오류~~");
     		}
     	});
-    }
-//페이지
- 		function pageCheck() {
-    	let pageSize = document.getElementById("pageSize").value;
-    	location.href = "${ctp}/AdminBoardTool.admin?pag=${pag}&pageSize="+pageSize;
-    }
-  
- // 분류 조회하기
- 		function selectCheck() {
-        
-    	let part = myform.part.value;
-    	let showNum = myform.showNum.value;
-    	location.href = "${ctp}/AdminBoardToolShow.admin?pag=${pag}&pageSize=${pageSize}&part="+part+"&showNum="+showNum;
-    	
-  		myform.submit();
     }
   </script>
     
@@ -150,49 +143,48 @@
 										<input type="checkbox" id="checkAll"/>전체선택/해제 &nbsp; &nbsp;
 										<input type="checkbox" id="reverseAll"/>전체반전 &nbsp; &nbsp;
 									</td>
+									
 									<td class="text-right">
-										<a href="javascript:memberDelete()"  class="btn btn-danger btn-sm" ><b>삭제</b></a>
+										<input type="button" value="삭제" onclick="deleteCheck()" class="btn btn-danger btn-sm"/> &nbsp;
 									</td>
+									
 									<td>
 										<a href="${ctp}/AdminBoardInput.admin" class="btn btn-primary btn-sm">글쓰기</a>
 									</td>
 									
 									<td class="text-right" style="display:flex" >
-											<select name="part" id="part">
-											  <option value="0" ${part=="0" ? "selected" : ""}>전체</option>
-												<option value="1" ${part=="1" ? "selected" : ""}>전통주</option>
-												<option value="2" ${part=="2" ? "selected" : ""}>서양주</option>
-												<option value="3" ${part=="3" ? "selected" : ""}>동양주</option>
-											</select>
-										
-											<select name="showNum" id="showNum">
-												<option value="0" ${showNum == "0" ? "selected" : ""}>전체공개</option>
-												<option value="1" ${showNum == "1" ? "selected" : ""}>준회원</option>
-												<option value="2" ${showNum == "2" ? "selected" : ""}>정회원</option>
-												<option value="3" ${showNum == "3" ? "selected" : ""}>우수회원</option>
-												<option value="4" ${showNum == "4" ? "selected" : ""}>운영자</option>
-												<option value="5" ${showNum == "5" ? "selected" : ""}>관리자</option>
-												<option value="6" ${showNum == "6" ? "selected" : ""}>공지전용</option>
-											</select>
-											<input type="button" value="검색" onclick="selectCheck()" class="btn btn-primary"/> &nbsp;
-									</td>
+										<select name="part" id="part">
+										  <option value="0" ${part=="0" ? "selected" : ""}>전체</option>
+											<option value="1" ${part=="1" ? "selected" : ""}>전통주</option>
+											<option value="2" ${part=="2" ? "selected" : ""}>서양주</option>
+											<option value="3" ${part=="3" ? "selected" : ""}>동양주</option>
+										</select>
 									
-									<td>
-										<!-- 한페이지 분량처리 -->
-										<select name="pageSize" id="pageSize" onchange="pageCheck()">
-											<option <c:if test="${pageSize == 3}">selected</c:if>>3</option>
-											<option <c:if test="${pageSize == 5}">selected</c:if>>5</option>
-											<option <c:if test="${pageSize == 10}">selected</c:if>>10</option>
-											<option <c:if test="${pageSize == 15}">selected</c:if>>15</option>
-											<option <c:if test="${pageSize == 20}">selected</c:if>>20</option>
-										</select> 건
-									</td>
+										<select name="showNum" id="showNum">
+											<option value="0" ${showNum == "0" ? "selected" : ""}>전체공개</option>
+											<option value="1" ${showNum == "1" ? "selected" : ""}>준회원</option>
+											<option value="2" ${showNum == "2" ? "selected" : ""}>정회원</option>
+											<option value="3" ${showNum == "3" ? "selected" : ""}>우수회원</option>
+											<option value="4" ${showNum == "4" ? "selected" : ""}>운영자</option>
+											<option value="5" ${showNum == "5" ? "selected" : ""}>관리자</option>
+											<option value="6" ${showNum == "6" ? "selected" : ""}>공지전용</option>
+										</select>
+											
+										<select name="pageSize" id="pageSize">
+									    <option value="3" ${pageSize == "3" ? "selected" : ""}>3</option>
+									    <option value="5" ${pageSize == "5" ? "selected" : ""}>5</option>
+									    <option value="10" ${pageSize == "10" ? "selected" : ""}>10</option>
+									    <option value="15" ${pageSize == "15" ? "selected" : ""}>15</option>
+									    <option value="20" ${pageSize == "20" ? "selected" : ""}>20</option>
+										</select>
 										
+									<input type="button" value="검색" onclick="selectCheck()" class="btn btn-primary"/> &nbsp;
+									</td>
 								</tr>
 							</table>
-							<input type="hidden" name="pag" value="${pag}"/>
-							<input type="hidden" name="pageSize" value="${pageSize}"/>
-						</form>
+							<input type="hidden" name="pag" value="${pag}" />
+						</form >
+						<form name="myform1">
 							<table class="table table-hover" style="width: 100%;">
 								<tr class="table-dark text-dark text-center">
 									<th style="width: 8%;">번호</th>
@@ -205,6 +197,7 @@
 									<th style="width: 8%;">조회수</th>
 									<th style="width: 8%;">좋아요</th>
 								</tr>
+								
 								<c:forEach var="vo" items="${vos}" varStatus="st">
 									<tr class="text-center">
 										<td>
@@ -226,18 +219,13 @@
 											<c:if test="${vo.part == 2}"> 서양주 </c:if>
 											<c:if test="${vo.part == 3}"> 동양주 </c:if>
 										</td>
-										
-										
 										<td>${vo.showNum}</td>
-										
-										
 										<td>
 											<c:if test="${vo.hour_diff > 24}">${fn:substring(vo.wDate,0,10)}</c:if>
 											<c:if test="${vo.hour_diff <= 24}">
 												${vo.day_diff == 0 ? fn:substring(vo.wDate,11,19) : fn:substring(vo.wDate,10,16)}
 											</c:if>
 										</td>
-										
 										<td>${vo.readNum}</td>
 										<td>${vo.good}</td>
 									</tr>
@@ -245,6 +233,7 @@
 								</c:forEach>
 							<tr><td colspan="6" class="m-0 p-0"></td></tr>
 							</table>
+							</form>
 										  <!-- 블록 페이징 처리 -->
 							<div class="text-center m-4">
 							<ul class="pagination justify-content-center pagination-sm">
